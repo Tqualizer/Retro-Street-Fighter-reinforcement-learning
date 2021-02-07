@@ -6,9 +6,9 @@ The first commit uses largely unchanged model examples from https://github.com/o
 This repo includes some example .bk2 files in thefolder for those interested to play back and observe the AI in action.
 
 ## (Planned) additions & changes 
-* [ ] Track learning in game with interactive parser
 * [ ] Implement and test other algorithms (e.g. PPO)
-* [ ] Code in character special moves as inputs
+* [ ] Implement discretization so that special moves are part of the moveset
+* [ ] Track learning in game with interactive parser
 * [ ] Apply pre-trained models to new situations (experiment with different states and characters)
 * [ ] Add ability to train from human input parameters or play against human opponent
 
