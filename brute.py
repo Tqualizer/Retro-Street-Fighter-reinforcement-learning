@@ -8,6 +8,7 @@ does rely on the same sequence of actions producing the same result when played
 back.
 """
 
+import matplotlib.pyplot as plt
 import random
 import argparse
 import time
@@ -15,9 +16,7 @@ import numpy as np
 import retro
 import gym
 
-
 EXPLORATION_PARAM = 0.005
-
 
 class Frameskip(gym.Wrapper):
     def __init__(self, env, skip=4):
@@ -182,10 +181,14 @@ class Brute:
 def brute_retro(
     game,
     max_episode_steps=1500,
-    timestep_limit=1e6,
+    timestep_limit=1e5,
     state=retro.State.DEFAULT,
     scenario=None,
 ):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    x, y = [],[]
+
     env = retro.make(game, state, use_restricted_actions=retro.Actions.DISCRETE, scenario=scenario)
     env = Frameskip(env)
     env = TimeLimit(env, max_episode_steps=max_episode_steps)
@@ -200,6 +203,17 @@ def brute_retro(
         if rew > best_rew:
             print("new best reward {} => {}".format(best_rew, rew), time.asctime( time.localtime(time.time()) ))
             best_rew = rew
+            x.append(timesteps)
+            y.append(best_rew)
+            ax.plot(x, y, marker='.', color='b')
+            fig.canvas.draw()
+            ax.set_xlim(left=0, right=timestep_limit)
+            ax.set(title = 'Street Fighter 2 AI - Brute Algorithm',
+                   ylabel = 'Fitness score',
+                   xlabel = 'Timesteps')
+            fig.show()
+            plt.pause(0.001)
+
             env.unwrapped.record_movie("SFII" + str(timesteps) + ".bk2")
             env.reset()
             for act in acts:
