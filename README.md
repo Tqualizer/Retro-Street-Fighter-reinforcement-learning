@@ -2,13 +2,14 @@
 Custom implementation of Open AI Gym Retro for training a Street Fighter 2 AI via reinforcement learning.
 
 The first commit uses largely unchanged model examples from https://github.com/openai/retro as a POC to train the AI using the 'Brute' method.
+Update 21/02/21 -'Brute' example includes live tracking graph of learning rate. ppo2 implementation is work in progress.
 
 This repo includes some example .bk2 files in thefolder for those interested to play back and observe the AI in action.
 
 ## (Planned) additions & changes 
-* [ ] Implement and test other algorithms (e.g. PPO)
+* [x] Implement and test other algorithms - Work in progress with ppo2
 * [ ] Implement discretization so that special moves are part of the moveset
-* [ ] Track learning in game with interactive parser
+* [x] Track learning in game with interactive parser - Work in progress
 * [ ] Apply pre-trained models to new situations (experiment with different states and characters)
 * [ ] Add ability to train from human input parameters or play against human opponent
 
