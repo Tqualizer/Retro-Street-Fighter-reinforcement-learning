@@ -303,9 +303,13 @@ class PPO2(ActorCriticRLModel):
         self.learning_rate = get_schedule_fn(self.learning_rate)
         self.cliprange = get_schedule_fn(self.cliprange)
         cliprange_vf = get_schedule_fn(self.cliprange_vf)
-
+        bestscore = 0
         new_tb_log = self._init_num_timesteps(reset_num_timesteps)
         callback = self._init_callback(callback)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        x, y = [0], [0]
 
         with SetVerbosity(self.verbose), TensorboardWriter(self.graph, self.tensorboard_log, tb_log_name, new_tb_log) \
                 as writer:
@@ -386,7 +390,7 @@ class PPO2(ActorCriticRLModel):
                                                 masks.reshape((self.n_envs, self.n_steps)),
                                                 writer, self.num_timesteps)
 
-                if self.verbose >= 1 and (update % log_interval == 0 or update == 1):
+                if self.verbose == 1 and (update % log_interval == 0 or update == 1):
                     explained_var = explained_variance(values, returns)
                     logger.logkv("serial_timesteps", update * self.n_steps)
                     logger.logkv("n_updates", update)
@@ -402,7 +406,21 @@ class PPO2(ActorCriticRLModel):
                     for (loss_val, loss_name) in zip(loss_vals, self.loss_names):
                         logger.logkv(loss_name, loss_val)
                     logger.dumpkvs()
-
+                if self.verbose == 2 and (update % log_interval == 0 or update == 1) and episode_stats.mean_reward() > bestscore:
+                    bestscore = episode_stats.mean_reward()
+                    logger.logkv('time_elapsed', t_start - t_first_start)
+                    logger.logkv("mean_episode_reward", bestscore)
+                    logger.dumpkvs()
+                    x.append(self.num_timesteps)
+                    y.append(bestscore)
+                    ax.plot(x, y, marker='.', color='b')
+                    fig.canvas.draw()
+                    ax.set_xlim(left=0, right=total_timesteps)
+                    ax.set(title='Street Fighter 2 AI - PPO2 Algorithm',
+                           ylabel='Fitness score',
+                           xlabel='Timesteps')
+                    fig.show()
+                    plt.pause(0.001)
             callback.on_training_end()
             return self
 

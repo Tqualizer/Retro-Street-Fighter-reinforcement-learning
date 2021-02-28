@@ -30,23 +30,22 @@ class Discretizer(gym.ActionWrapper):
         return self._decode_discrete_action[act].copy()
 
 
-class SonicDiscretizer(Discretizer):
+class SF2Discretizer(Discretizer):
     """
     Use Sonic-specific discrete actions
     based on https://github.com/openai/retro-baselines/blob/master/agents/sonic_util.py
     """
     def __init__(self, env):
-        super().__init__(env=env, combos=[['LEFT'], ['RIGHT'], ['LEFT', 'DOWN'], ['RIGHT', 'DOWN'], ['DOWN'], ['DOWN', 'B'], ['B']])
-
+        super().__init__(env=env, combos=[[],['DOWN'],['DOWN','LEFT'],['LEFT'],['DOWN'],['DOWN','RIGHT'],['RIGHT'],['UP','RIGHT'],['UP','LEFT'],['A'],['B'],['C'],['X'],['Y'],['Z']])
 
 def main():
-    env = retro.make(game='SonicTheHedgehog3-Genesis', use_restricted_actions=retro.Actions.DISCRETE)
+    env = retro.make(game='StreetFighterIISpecialChampionEdition-Genesis',state='Champion.Level1.RyuVsGuile.state', use_restricted_actions=retro.Actions.DISCRETE)
     print('retro.Actions.DISCRETE action_space', env.action_space)
     env.close()
 
-    env = retro.make(game='SonicTheHedgehog3-Genesis')
-    env = SonicDiscretizer(env)
-    print('SonicDiscretizer action_space', env.action_space)
+    env = retro.make(game='StreetFighterIISpecialChampionEdition-Genesis', state= 'Champion.Level1.RyuVsGuile.state',)
+    env = SF2Discretizer(env)
+    print('SF2Discretizer action_space', env.action_space)
     env.close()
 
 

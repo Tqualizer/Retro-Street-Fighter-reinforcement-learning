@@ -15,6 +15,7 @@ import time
 import numpy as np
 import retro
 import gym
+from discretizer import SF2Discretizer
 
 EXPLORATION_PARAM = 0.005
 
@@ -180,21 +181,23 @@ class Brute:
 
 def brute_retro(
     game,
-    max_episode_steps=1500,
-    timestep_limit=1e5,
+    max_episode_steps=1000, #episode length
+    timestep_limit=7e3, #total training timelimit
     state=retro.State.DEFAULT,
     scenario=None,
 ):
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    x, y = [],[]
+    x, y = [0],[0]
 
-    env = retro.make(game, state, use_restricted_actions=retro.Actions.DISCRETE, scenario=scenario)
+    env = retro.make(game, state, scenario=scenario)
+    env = SF2Discretizer(env) # use the custom discretised environment
     env = Frameskip(env)
     env = TimeLimit(env, max_episode_steps=max_episode_steps)
 
     brute = Brute(env, max_episode_steps=max_episode_steps)
     timesteps = 0
+    t_first_start = time.time()
     best_rew = float('-inf')
     while True:
         acts, rew = brute.run()
@@ -213,15 +216,19 @@ def brute_retro(
                    xlabel = 'Timesteps')
             fig.show()
             plt.pause(0.001)
-
-            env.unwrapped.record_movie("SFII" + str(timesteps) + ".bk2")
+            print(int(time.time()-t_first_start),'seconds')
+            #env.unwrapped.record_movie("SFII" + str(timesteps) + ".bk2") # to save the best model run
             env.reset()
             for act in acts:
                 env.step(act)
-            env.unwrapped.stop_record()
+            #env.unwrapped.stop_record()
 
         if timesteps > timestep_limit:
             print("timestep limit exceeded")
+            env.reset()
+            for act in acts:
+                env.step(act)
+                env.render() #plays the trained model run
             break
 
 def main():
