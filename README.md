@@ -10,7 +10,7 @@ This repo includes some example .bk2 files in the folder for those interested to
 
 <div align="center">
       <a href="https://youtu.be/ei-xojQE_hQ?t=42">
-            <img src="https://youtu.be/ei-xojQE_hQ?t=42" width ="700" />
+            <img src="https://github.com/Tqualizer/Retro-Street-Fighter-reinforcement-learning/blob/main/Training%20outputs/Street%20Fighter%20II/SF2YT.png" width ="700" />
       </a>
 </div>
 
