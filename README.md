@@ -4,9 +4,16 @@ Custom implementation of Open AI Gym Retro for training a Street Fighter 2 AI vi
 The first commit uses largely unchanged model examples from https://github.com/openai/retro as a POC to train the AI using the 'Brute' method.
 
 UPDATE 21/02/21 -'Brute' example includes live tracking graph of learning rate. ppo2 implementation is work in progress.
-UPDATE 28/02/21 - 'PPO2' model has been integrated and testing. Mlp is much faster to train than Cnn and has similar results. Additional tracking tools for training added. So far I cannot gett PPO2 to comfortably outperform brute. Task added to experiment further with hyperparameters.
+UPDATE 28/02/21 - 'PPO2' model has been integrated and testing. Mlp is much faster to train than Cnn and has similar results. Additional tracking tools for training added. So far I cannot get PPO2 to comfortably outperform brute. Task added to experiment further with hyperparameters.
 
-This repo includes some example .bk2 files in thefolder for those interested to play back and observe the AI in action.
+This repo includes some example .bk2 files in the folder for those interested to play back and observe the AI in action. I have uploaded the 'SFII610543' output from the training outputs folder from the Brute method as an example. 
+
+<div align="center">
+      <a href="https://youtu.be/ei-xojQE_hQ?t=42">
+      </a>
+</div>
+
+
 
 ## (Planned) additions & changes 
 * [x] Implement and test other algorithms
